@@ -43,45 +43,36 @@
     function updateView() {
         document.getElementById('app').innerHTML =/*HTML*/ `
         ${isUserReady ? 
-        ` <div class="h1">
-        <h1>Can you solve the riddle and escape the room?</h1>
-        
-    </div>
-    <div class="timerBox">
-        <div id="timeDisplay"></div>
-    </div>
+            `<div class="h1">
+                <h1>Can you solve the riddle and escape the room?</h1>
+                </div>
+                <div class="timerBox">
+                    <div id="timeDisplay"></div>
+                </div>
 
-    <div class="riddleDisplay">
-        <p>${currentRiddle}</p>
-    </div>
-
-
-<div class="inputDisplay">
-    
-    <label>Enter your answer:</label><br><br>
-    <input id="inputId"
-        type="text"
-        oninput="tempAnswer = this.value"
-        value="${tempAnswer ?? ''}"
-        >
-        </div>
-        <br>
-    <div class="container">
-        ${isAnswerCorrect ? '' : `<button class="buttonsDisplay" type="submit" onclick="submitAnswer()" id="mySubmit">Submit</button>`}
-        ${isAnswerCorrect ? `<button class="buttonsDisplay" onclick="riddlesGoNext()">Next Riddle</button>` : ''}
-        ${hasUserWon ? `<button class="buttonsDisplay" onclick="restart()">Restart</button>` : ''}
-    </div>
-    <p id="resultElement"> ${result}</p>
-    
-     
-    `
-    
-    : `<br><div id=lossbox class="startText">Answer these three riddles, but don't let the time run out...</div>
-    <button id="btn1" class="startBtn" onclick="userReady()">Are you ready to start?</button>
-    `
-   
-}
-`;
+                <div class="riddleDisplay">
+                    <p>${currentRiddle}</p>
+                </div>
+                <div class="inputDisplay">
+                    
+                    <label>Enter your answer:</label><br><br>
+                    <input id="inputId"
+                        type="text"
+                        oninput="tempAnswer = this.value"
+                        value="${tempAnswer ?? ''}"
+                        >
+                        </div>
+                        <br>
+                    <div class="container">
+                        ${isAnswerCorrect ? '' : `<button class="buttonsDisplay" type="submit" onclick="submitAnswer()" id="mySubmit">Submit</button>`}
+                        ${isAnswerCorrect ? `<button class="buttonsDisplay" onclick="riddlesGoNext()">Next Riddle</button>` : ''}
+                        ${hasUserWon ? `<button class="buttonsDisplay" onclick="restart()">Restart</button>` : ''}
+                    </div>
+                    <p id="resultElement"> ${result}</p>
+            `:`<br><div id=lossbox class="startText">Answer these three riddles, but don't let the time run out...</div>
+                <button id="btn1" class="startBtn" onclick="userReady()">Are you ready to start?</button>`
+                   
+        }`;
     }
 
     // Controller 
@@ -141,6 +132,8 @@
 
     function userReady() {
         isUserReady = true;
+        hasUserWon = false;
+        isAnswerCorrect = false;
         countdown();
         updateView();
     }
