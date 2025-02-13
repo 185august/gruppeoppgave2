@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Escape Room oppgave</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="bodyDisplay" onload="updateView()">
+    <div id="app"></div>
+    <audio id="correctSound" src="correct.wav"></audio>
+    <audio id="incorrectSound" src="wrong.wav"></audio>
+</body>
+<script>
+    // Model
+    
+    const riddle1 = 'I am the beginning of eternity and the end of time and space. I am the beginning of every end and the end of every place.<br><br> What am I?';
+    const riddle2 = 'A tree which is planted on Monday and doubles in size each day is fully grown on the following Sunday.<br><br> On what day is it half grown?';
+    const riddle3 = 'I’m always in front of you, but can never be seen.<br><br> What am I?';
+    
+    
+    let currentRiddle = riddle1;
+    let result = '';
+    let tempAnswer;
+    let userAnswer = '';
+    let solution;
+    let isAnswerCorrect = false;
+    let isUserReady = false;
+    let hasUserWon = false;
+
+    let done;
+    let timer;
+    let seconds = 30;
+    let minutes = 2;
+
+
+
+    // View
+
+
+    function updateView() {
+        document.getElementById('app').innerHTML =/*HTML*/ `
+        ${isUserReady ? 
+        ` <div class="h1">
+        <h1>Can you solve the riddle and escape the room?</h1>
+        
+    </div>
+    <div class="timerBox">
+        <div id="timeDisplay"></div>
+    </div>
+
+    <div class="riddleDisplay">
+        <p>${currentRiddle}</p>
+    </div>
+
+
+<div class="inputDisplay">
+    
+    <label>Enter your answer:</label><br><br>
+    <input id="inputId"
+        type="text"
+        oninput="tempAnswer = this.value"
+        value="${tempAnswer ?? ''}"
+        >
+        </div>
+        <br>
+    <div class="container">
+        ${isAnswerCorrect ? '' : `<button class="buttonsDisplay" type="submit" onclick="submitAnswer()" id="mySubmit">Submit</button>`}
+        ${isAnswerCorrect ? `<button class="buttonsDisplay" onclick="riddlesGoNext()">Next Riddle</button>` : ''}
+        ${hasUserWon ? `<button class="buttonsDisplay" onclick="restart()">Restart</button>` : ''}
+    </div>
+    <p id="resultElement"> ${result}</p>
+    
+     
+    `
+    
+    : `<br><div id=lossbox class="startText">Answer these three riddles, but don't let the time run out...</div>
+    <button id="btn1" class="startBtn" onclick="userReady()">Are you ready to start?</button>
+    `
+   
+}
+`;
+    }
+
+    // Controller 
+
+       /*  if (inputIdValue === tempAnswer.toLowerCase()) {
+         
+         } else {
+         incorrectSound.play();
+        } */
+    function playAudio(soundId) {
+       const sound = document.getElementById(soundId);
+       sound.play();
+       
+    }
+    function submitAnswer() {
+        
+        result = 'wrong'
+        userAnswer = tempAnswer.toLowerCase();
+        
+
+        if (currentRiddle == riddle1) {
+            solution = 'e'
+            if (userAnswer == solution) {
+                isAnswerCorrect = true;
+                result = 'correct';
+                playAudio('correctSound');
+            }
+            else {
+                playAudio('incorrectSound');
+            }
+        }else if (currentRiddle == riddle2) {
+            solution = 'saturday'
+            if (userAnswer == solution) {
+                isAnswerCorrect = true;
+                result = 'correct';
+                playAudio('correctSound');
+            }else {
+                playAudio('incorrectSound');
+            }
+        }
+        else if (currentRiddle == riddle3) {
+            solution = 'future'
+            if (userAnswer == solution) {
+                isAnswerCorrect = true;
+                result = 'correct'
+                currentRiddle = 'You have solved all the riddles, congrats!';
+                hasUserWon = true;
+                tempAnswer = null;
+                clearInterval(timer); 
+                playAudio('correctSound');
+            }else {
+                playAudio('incorrectSound');
+            }
+        }
+        updateView();
+    }
+
+    function userReady() {
+        isUserReady = true;
+        countdown();
+        updateView();
+    }
+
+    function riddlesGoNext() {
+        if (currentRiddle == riddle1 && isAnswerCorrect == true) {
+            result = '';
+            tempAnswer = null;
+            currentRiddle = riddle2;
+            isAnswerCorrect = false;
+
+        } else if (currentRiddle ==riddle2  && isAnswerCorrect == true) {
+            result = '';
+            tempAnswer = null;
+            currentRiddle = riddle3;
+            isAnswerCorrect = false;
+
+        } else if (currentRiddle == riddle3 && isAnswerCorrect == true) {
+            result = '';
+            tempAnswer = null;
+            isAnswerCorrect = false;
+        
+        }
+        updateView();
+    }
+
+
+    function countdown() {
+        timer = setInterval(countSecond, 1000);
+    }
+
+    function countSecond() {
+        seconds--;
+
+        if (seconds == 1) {
+            setTimeout(() => {
+                minutes--;
+                seconds = 60;
+            }, 1500);
+
+        }
+        if (minutes == -1) {
+            clearInterval(timer);
+            document.querySelector('#timeDisplay').innerHTML = `
+            You have ${minutes=2}:${seconds=30} until time's up...`;
+            isUserReady = false;
+            updateView();
+        }
+
+        if (seconds < 10) {
+            seconds = `0${seconds}`;
+        }
+        document.querySelector('#timeDisplay').innerHTML = `
+        You have ${minutes}:${seconds} until time's up...`;
+    }
+
+    function restart() {
+        clearInterval(timer);
+            document.querySelector('#timeDisplay').innerHTML = `
+            You have ${minutes=2}:${seconds=30} until time's up...`;
+            isUserReady = false;
+            currentRiddle = riddle1;
+            updateView();
+    }
+
+</script>
+
+</html>
