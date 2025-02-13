@@ -43,7 +43,7 @@
     function updateView() {
         document.getElementById('app').innerHTML =/*HTML*/ `
         ${isUserReady ? 
-            `<div class="h1">
+           /*HTML*/ `<div class="h1">
                 <h1>Can you solve the riddle and escape the room?</h1>
                 </div>
                 <div class="timerBox">
@@ -60,28 +60,22 @@
                         type="text"
                         oninput="tempAnswer = this.value"
                         value="${tempAnswer ?? ''}"
-                        >
-                        </div>
-                        <br>
-                    <div class="container">
-                        ${isAnswerCorrect ? '' : `<button class="buttonsDisplay" type="submit" onclick="submitAnswer()" id="mySubmit">Submit</button>`}
-                        ${isAnswerCorrect ? `<button class="buttonsDisplay" onclick="riddlesGoNext()">Next Riddle</button>` : ''}
-                        ${hasUserWon ? `<button class="buttonsDisplay" onclick="restart()">Restart</button>` : ''}
-                    </div>
+                    >
+                </div>
+                <br>
+                <div class="container">
+                    ${isAnswerCorrect ? '' : /*HTML*/`<button class="buttonsDisplay" type="submit" onclick="submitAnswer()" id="mySubmit">Submit</button>`}
+                    ${isAnswerCorrect ? /*HTML*/`<button class="buttonsDisplay" onclick="riddlesGoNext()">Next Riddle</button>` : ''}
+                    ${hasUserWon ? /*HTML*/`<button class="buttonsDisplay" onclick="restart()">Restart</button>` : ''}
+                </div>
                     <p id="resultElement"> ${result}</p>
-            `:`<br><div id=lossbox class="startText">Answer these three riddles, but don't let the time run out...</div>
+            `:/*HTML*/`<br><div id="lossbox" class="startText">Answer these three riddles, but don't let the time run out...</div>
                 <button id="btn1" class="startBtn" onclick="userReady()">Are you ready to start?</button>`
                    
         }`;
     }
 
     // Controller 
-
-       /*  if (inputIdValue === tempAnswer.toLowerCase()) {
-         
-         } else {
-         incorrectSound.play();
-        } */
     function playAudio(soundId) {
        const sound = document.getElementById(soundId);
        sound.play();
@@ -116,11 +110,11 @@
         else if (currentRiddle == riddle3) {
             solution = 'future'
             if (userAnswer == solution) {
-                isAnswerCorrect = true;
-                result = 'correct'
-                currentRiddle = 'You have solved all the riddles, congrats!';
-                hasUserWon = true;
+                result = 'correct';
                 tempAnswer = null;
+                isAnswerCorrect = false;
+                hasUserWon = true;
+                currentRiddle = 'You have solved all the riddles, congrats!';
                 clearInterval(timer); 
                 playAudio('correctSound');
             }else {
@@ -151,12 +145,7 @@
             currentRiddle = riddle3;
             isAnswerCorrect = false;
 
-        } else if (currentRiddle == riddle3 && isAnswerCorrect == true) {
-            result = '';
-            tempAnswer = null;
-            isAnswerCorrect = false;
-        
-        }
+        } 
         updateView();
     }
 
